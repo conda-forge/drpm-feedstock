@@ -42,7 +42,7 @@ test:
 
 about:
   home: https://github.com/rpm-software-management/drpm/
-  license: BDS-3-Clause AND LGPL-2.0-or-later
+  license: BSD-3-Clause AND LGPL-2.0-or-later
   license_file:
     - LICENSE.BSD
     - COPYING

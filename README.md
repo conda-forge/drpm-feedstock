@@ -3,7 +3,7 @@ About drpm
 
 Home: https://github.com/rpm-software-management/drpm/
 
-Package license: BDS-3-Clause AND LGPL-2.0-or-later
+Package license: BSD-3-Clause AND LGPL-2.0-or-later
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/drpm-feedstock/blob/master/LICENSE.txt)
 
