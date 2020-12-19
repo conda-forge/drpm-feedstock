@@ -10,7 +10,7 @@ source:
   sha256: d54460e84af36481b66585d4496f687687470e2f90ec94dad7972d620e053448
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win or osx]
   run_exports:
     - {{ pin_subpackage('drpm', max_pin='x') }}
