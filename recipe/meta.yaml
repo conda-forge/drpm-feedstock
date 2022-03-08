@@ -1,5 +1,5 @@
 {% set name = "drpm" %}
-{% set version = "0.5.0" %}
+{% set version = "0.5.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,10 +7,10 @@ package:
 
 source:
   url: https://github.com/rpm-software-management/drpm/archive/{{ version }}/drpm-{{ version }}.tar.gz
-  sha256: d54460e84af36481b66585d4496f687687470e2f90ec94dad7972d620e053448
+  sha256: 9e07c0eb3cdfb766d97224b3379ffe60fdb5ac4e04e2a32bb0a00ee2f7458fb6
 
 build:
-  number: 3
+  number: 0
   skip: true  # [win or osx]
   run_exports:
     - {{ pin_subpackage('drpm', max_pin='x') }}
@@ -46,7 +46,7 @@ about:
   license_file:
     - LICENSE.BSD
     - COPYING
-  summary: 'A small library for fetching information from deltarpm packages'
+  summary: A small library for fetching information from deltarpm packages
   dev_url: https://github.com/rpm-software-management/drpm/
 
 extra:
