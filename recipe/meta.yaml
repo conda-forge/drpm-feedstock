@@ -1,5 +1,5 @@
 {% set name = "drpm" %}
-{% set version = "0.5.1" %}
+{% set version = "0.5.2" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/rpm-software-management/drpm/archive/{{ version }}/drpm-{{ version }}.tar.gz
-  sha256: 9e07c0eb3cdfb766d97224b3379ffe60fdb5ac4e04e2a32bb0a00ee2f7458fb6
+  sha256: 33767a4029f707ac974cbbc6cdf02d12a8574a9647eb1b7c2424195e1784f054
 
 build:
   number: 0
