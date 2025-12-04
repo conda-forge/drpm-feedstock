@@ -1,5 +1,5 @@
 {% set name = "drpm" %}
-{% set version = "0.5.2" %}
+{% set version = "0.5.3" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://github.com/rpm-software-management/drpm/archive/{{ version }}/drpm-{{ version }}.tar.gz
-  sha256: 33767a4029f707ac974cbbc6cdf02d12a8574a9647eb1b7c2424195e1784f054
+  sha256: 33b6337a07af2874835321d802c62cca0e6bd8ae18c4534ce1fe68f7bcf762bc
   patches:
     - patches/0001-cmake-minimum-required.patch
 
 build:
-  number: 1
+  number: 0
   skip: true  # [win or osx]
   run_exports:
     - {{ pin_subpackage('drpm', max_pin='x') }}
