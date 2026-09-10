@@ -1,7 +1,7 @@
 schema_version: 1
 
 context:
-  version: "0.5.2"
+  version: "0.5.3"
 
 package:
   name: drpm
@@ -9,14 +9,10 @@ package:
 
 source:
   url: https://github.com/rpm-software-management/drpm/archive/${{ version }}/drpm-${{ version }}.tar.gz
-  sha256: 33767a4029f707ac974cbbc6cdf02d12a8574a9647eb1b7c2424195e1784f054
-  patches:
-    # 0.5.2 predates CMake 4, which dropped compatibility below 3.5. Merged
-    # upstream as PR #24 and released in 0.5.3, so drop this on the next bump.
-    - patches/0001-cmake-minimum-required.patch
+  sha256: 33b6337a07af2874835321d802c62cca0e6bd8ae18c4534ce1fe68f7bcf762bc
 
 build:
-  number: 3
+  number: 0
   skip: win or osx
 
 requirements:
