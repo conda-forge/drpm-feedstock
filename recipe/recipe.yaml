@@ -1,0 +1,103 @@
+schema_version: 1
+
+context:
+  version: "0.5.2"
+
+package:
+  name: drpm
+  version: ${{ version }}
+
+source:
+  url: https://github.com/rpm-software-management/drpm/archive/${{ version }}/drpm-${{ version }}.tar.gz
+  sha256: 33767a4029f707ac974cbbc6cdf02d12a8574a9647eb1b7c2424195e1784f054
+  patches:
+    # 0.5.2 predates CMake 4, which dropped compatibility below 3.5. Merged
+    # upstream as PR #24 and released in 0.5.3, so drop this on the next bump.
+    - patches/0001-cmake-minimum-required.patch
+
+build:
+  number: 3
+  skip: win or osx
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
+    - make
+    - cmake
+    - pkg-config
+  host:
+    - bzip2
+    - openssl
+    - rpm-tools
+    - liblzma-devel
+    - zlib
+    - zstd
+    - cmocka
+  run:
+    # https://abi-laboratory.pro/index.php?view=timeline&l=rpm
+    - ${{ pin_compatible('rpm-tools', upper_bound="x.x") }}
+  run_exports:
+    - ${{ pin_subpackage('drpm', upper_bound='x') }}
+  ignore_run_exports:
+    by_name:
+      # Only linked by the unit tests, which are not installed.
+      - cmocka
+
+tests:
+  # drpm installs no executable, so the only way to exercise it is to compile
+  # and run a caller against the installed headers, pkg-config file and library.
+  # The source is inlined rather than pulled in with `files:` so that it is not
+  # staged into etc/conda/test-files and shipped to everyone installing drpm.
+  - script:
+      - |
+        cat > test_drpm.c <<'CSRC'
+        #include <stddef.h>
+
+        #include <drpm.h>
+
+        int main(void)
+        {
+            drpm_make_options *opts = NULL;
+
+            if (drpm_make_options_init(&opts) != DRPM_ERR_OK)
+                return 1;
+            if (drpm_make_options_defaults(opts) != DRPM_ERR_OK)
+                return 1;
+            if (drpm_make_options_destroy(&opts) != DRPM_ERR_OK)
+                return 1;
+
+            return 0;
+        }
+        CSRC
+      # -rpath because the test environment does not put $PREFIX/lib on the
+      # loader path, so the binary would build but not run.
+      - $CC $(pkg-config --cflags drpm) test_drpm.c $(pkg-config --libs drpm) -Wl,-rpath,"$PREFIX/lib" -o test_drpm
+      - ./test_drpm
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - pkg-config
+  - package_contents:
+      strict: true
+      lib:
+        - drpm
+      include:
+        - drpm.h
+      files:
+        - include/drpm.h
+        - lib/libdrpm.*
+        - lib/pkgconfig/drpm.pc
+
+about:
+  license: BSD-3-Clause AND LGPL-2.0-or-later
+  license_file:
+    - LICENSE.BSD
+    - COPYING
+  summary: A small library for fetching information from deltarpm packages
+  homepage: https://github.com/rpm-software-management/drpm/
+  repository: https://github.com/rpm-software-management/drpm/
+
+extra:
+  recipe-maintainers:
+    - chrisburr
